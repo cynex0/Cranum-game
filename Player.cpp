@@ -11,23 +11,23 @@ Player::Player(double x_, double y_) {
 	state = 0;
 
 	for (int i = 0; i < 11; i++) {
-		idle_animation[i].loadFromFile("sprites/player/idle/frame0.png");
+		idle_animation[i].loadFromFile("sprites/player/idle/frame"+ i + ".png");
 	}
 
 	for (int i = 0; i < 18; i++) {
-		attack_animation[i].loadFromFile("sprites/player/attack/frame0.png");
+		attack_animation[i].loadFromFile("sprites/player/attack/frame" + i + ".png");
 	}
 
 	for (int i = 0; i < 15; i++) {
-		dead_animation[i].loadFromFile("sprites/player/dead/frame0.png");
+		dead_animation[i].loadFromFile("sprites/player/dead/frame" + i + ".png");
 	}
 
 	for (int i = 0; i < 8; i++) {
-		hit_animation[i].loadFromFile("sprites/player/hit/frame0.png");
+		hit_animation[i].loadFromFile("sprites/player/hit/frame" + i + ".png");
 	}
 
 	for (int i = 0; i < 13; i++) {
-		walk_animation[i].loadFromFile("sprites/player/walk/frame0.png");
+		walk_animation[i].loadFromFile("sprites/player/walk/frame" + i + ".png");
 	}
 
 }
