@@ -14,4 +14,6 @@ public:
 	~Player();
 
 	virtual void move();
+	virtual void setdX(double dx_);
+	virtual void setdY(double dy_);
 };
