@@ -10,8 +10,26 @@ Player::Player(double x_, double y_) {
 	lives = 3;
 	state = 0;
 
-	texture.loadFromFile("sprites/player/idle/frame0.png");
-	sprite.setTexture(texture);
+	for (int i = 0; i < 11; i++) {
+		idle_animation[i].loadFromFile("sprites/player/idle/frame"+ i + ".png");
+	}
+
+	for (int i = 0; i < 18; i++) {
+		attack_animation[i].loadFromFile("sprites/player/attack/frame" + i + ".png");
+	}
+
+	for (int i = 0; i < 15; i++) {
+		dead_animation[i].loadFromFile("sprites/player/dead/frame" + i + ".png");
+	}
+
+	for (int i = 0; i < 8; i++) {
+		hit_animation[i].loadFromFile("sprites/player/hit/frame" + i + ".png");
+	}
+
+	for (int i = 0; i < 13; i++) {
+		walk_animation[i].loadFromFile("sprites/player/walk/frame" + i + ".png");
+	}
+
 }
 
 Player::~Player() {}
