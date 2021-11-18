@@ -4,7 +4,13 @@
 
 class Player : public IMoveable {
 private:
-	sf::Texture texture;
+
+	
+	sf::Texture idle_animation[11];
+	sf::Texture attack_animation[18];
+	sf::Texture dead_animation[15];
+	sf::Texture hit_animation[8];
+	sf::Texture walk_animation[13];
 	int lives;
 	int state; // 0 - default; 1 - head
 
