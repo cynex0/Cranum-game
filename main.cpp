@@ -7,13 +7,17 @@ using namespace sf;
 
 int main()
 {
-	sf::Clock clock;
-
 	RenderWindow window(VideoMode(WINDOW_W, WINDOW_H), "SFML Works!");
 	
 	Player player(100, 100);
 
-	//game loop
+	sf::Clock clock;
+	clock.restart();
+	int tp = clock.getElapsedTime().asMilliseconds();
+	int dt = 0;
+	int new_tp = 0;
+
+	// game loop
 	while (window.isOpen())
 	{
 		Event event;
@@ -23,6 +27,12 @@ int main()
 				window.close();	
 		}
 
+		// get frame time
+		new_tp = clock.getElapsedTime().asMilliseconds();
+		dt = new_tp - tp;
+		tp = new_tp;
+
+		// input
 		if (Keyboard::isKeyPressed(Keyboard::Right)) {
 			//std::cout << "Right" << std::endl;
 			player.setdX(PLAYER_DX);
@@ -33,10 +43,13 @@ int main()
 		}
 
 		//update entities
-		player.move();
+		player.update(dt);
 
 		//draw
+
+		//TODO: background
 		window.clear();
+		//TODO: for entity in entities: entity.draw()
 		window.draw(player.sprite);
 		window.display();
 	}
