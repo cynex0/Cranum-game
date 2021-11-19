@@ -3,9 +3,12 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-Player::Player(double x_, double y_)
-	:walk_animation("sprites/player/walk", 13),
-	idle_animation("sprites/player/idle", 11)
+Player::Player(double x_, double y_):
+	walk_animation("sprites/player/walk", 13),
+	idle_animation("sprites/player/idle", 11),
+	attack_animation("sprites/player/attack", 18),
+	death_animation("sprites/player/death", 15),
+	hit_animation("sprites/player/hit", 8)
 {
 	x = x_;
 	y = y_;
@@ -13,32 +16,11 @@ Player::Player(double x_, double y_)
 	dy = 0;
 
 	lives = 3;
-	state = 0;
+	state = idle;
 
 	current_frame = 0;
+	anim_time = 0;
 	dir = 'r';
-
-	//for (int i = 0; i < 11; i++) {
-		//idle_animation[i].loadFromFile("sprites/player/idle/frame" + std::to_string(i) + ".png");
-	//}
-
-	for (int i = 0; i < 18; i++) {
-		attack_animation[i].loadFromFile("sprites/player/attack/frame" + std::to_string(i) + ".png");
-	}
-
-	for (int i = 0; i < 15; i++) {
-		dead_animation[i].loadFromFile("sprites/player/dead/frame" + std::to_string(i) + ".png");
-	}
-
-	for (int i = 0; i < 8; i++) {
-		hit_animation[i].loadFromFile("sprites/player/hit/frame" + std::to_string(i) + ".png");
-	}
-
-	
-	//for (int i = 0; i < 13; i++) {
-		//walk_animation[i].loadFromFile("sprites/player/walk/frame" + std::to_string(i) + ".png");
-	//}
-
 }
 
 Player::~Player() {}
@@ -48,21 +30,22 @@ void Player::update(int dt_) {
 	y += dy * dt_;
 
 	anim_time += dt_;
+	//TODO: calculate for different animation lengths
 	current_frame = (anim_time / TICKRATE) % 11;
 
 	if ((dx == 0) && (dy == 0))
-		anim = idle;
+		state = idle;
 
 	if (dx > 0) {
-		anim = walk;
+		state = walk;
 		dir = 'r';
 	}
 	else if (dx < 0) {
-		anim = walk;
+		state = walk;
 		dir = 'l';
 	}
 	
-	switch (anim) {
+	switch (state) {
 		case idle: 
 			sprite.setTexture(idle_animation.frames[dir].at(current_frame));
 			break;

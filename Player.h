@@ -8,21 +8,19 @@ class Player : public IMoveable {
 private:
 	sf::Clock playerClock;
 
-//TODO : map["right", "left"]
 	Animation idle_animation;
-	sf::Texture attack_animation[18];
-	sf::Texture dead_animation[15];
-	sf::Texture hit_animation[8];
 	Animation walk_animation;
+	Animation attack_animation;
+	Animation death_animation;
+	Animation hit_animation;	
 	
 	int lives;
-	int state; // 0 - default; 1 - head
 	int anim_time;
 	int current_frame;
 	char dir;
 
-	enum Anim_Type { idle, walk, jump };
-	Anim_Type anim = idle;
+	enum State { idle, walk, jump, attack, take_dmg, death };
+	State state;
 
 public:
 	sf::Sprite sprite;

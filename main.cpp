@@ -34,19 +34,16 @@ int main()
 
 		// input
 		if (Keyboard::isKeyPressed(Keyboard::Right)) {
-			//std::cout << "Right" << std::endl;
 			player.setdX(PLAYER_DX);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Left)) {
-			//std::cout << "left" << std::endl;
 			player.setdX(-PLAYER_DX);
 		}
 
-		//update entities
+		// update entities
 		player.update(dt);
 
-		//draw
-
+		// draw
 		//TODO: background
 		window.clear();
 		//TODO: for entity in entities: entity.draw()
