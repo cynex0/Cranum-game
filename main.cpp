@@ -39,6 +39,9 @@ int main()
 		if (Keyboard::isKeyPressed(Keyboard::Left)) {
 			player.setdX(-PLAYER_DX);
 		}
+		if (Keyboard::isKeyPressed(Keyboard::Space)) {
+			player.attack();
+		}
 
 		// update entities
 		player.update(dt);

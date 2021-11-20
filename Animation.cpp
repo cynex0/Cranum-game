@@ -4,10 +4,16 @@
 #include <map>
 #include <string>
 
-Animation::Animation(const std::string path, int frame_count) {
-	for (int i = 0; i < frame_count; ++i) {
+Animation::Animation() {
+	length = 0;
+}
+
+void Animation::fromDir(const std::string path, int frame_count) {
+	length = frame_count;
+
+	for (int i = 0; i < length; ++i) {
 		image.loadFromFile(path + "/frame" + std::to_string(i) + ".png");
-		
+
 		//dir right
 		texture.loadFromImage(image);
 		frames['r'].push_back(texture);
@@ -17,4 +23,12 @@ Animation::Animation(const std::string path, int frame_count) {
 		texture.loadFromImage(image);
 		frames['l'].push_back(texture);
 	}
+}
+
+sf::Texture Animation::getTexture(char dir, int iFrame) {
+	return frames[dir].at(iFrame);
+}
+
+int Animation::getLength() {
+	return length;
 }
