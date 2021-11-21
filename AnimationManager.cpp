@@ -3,7 +3,7 @@
 AnimationManager::AnimationManager() { }
 
 Animation AnimationManager::get(IMoveable::State state) {
-	return this->animations[state];
+	return animations[state];
 }
 
 void AnimationManager::add(IMoveable::State state, const std::string path, int frame_count) {

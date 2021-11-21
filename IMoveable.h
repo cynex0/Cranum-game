@@ -7,10 +7,10 @@ protected:
 	double dx, dy;
 
 public:
-	enum State { idle, walk, jump, attacking, take_dmg, death };
+	enum State { idle, walk, jump, attacking, take_dmg, death, transforming, transforming_back, rolling };
 
 	virtual void update(int dt_) = 0;
-	virtual void draw(sf::RenderWindow window) = 0;
+	virtual void draw(sf::RenderWindow& window) = 0;
 	virtual void setdX(double dx_) = 0;
 	virtual void setdY(double dy_) = 0;
 };

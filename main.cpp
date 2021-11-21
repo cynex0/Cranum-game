@@ -30,6 +30,7 @@ int main()
 		// get frame time
 		new_tp = clock.getElapsedTime().asMilliseconds();
 		dt = new_tp - tp;
+		std::cout << "dt: " << dt << std::endl;
 		tp = new_tp;
 
 		// input
@@ -40,7 +41,10 @@ int main()
 			player.setdX(-PLAYER_DX);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Space)) {
-			player.attack();
+			player.attack(tp);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::LShift)) {
+			player.transform(tp);
 		}
 
 		// update entities
@@ -50,7 +54,7 @@ int main()
 		//TODO: background
 		window.clear();
 		//TODO: for entity in entities: entity.draw()
-		window.draw(player.sprite);
+		player.draw(window);
 		window.display();
 	}
 

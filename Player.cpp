@@ -1,27 +1,35 @@
 #include "Player.h"
+#include "IMoveable.h"
 #include "Constants.h"
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <iostream>
 
-Player::Player(double x_, double y_){
+Player::Player(double x_, double y_)
+	:
+	attack_cd(10),
+	transform_cd(25)
+{
 	x = x_;
 	y = y_;
 	dx = 0;
 	dy = 0;
 
 	lives = 3;
-	state = idle;
+	state = State::idle;
+	isHead = false;
 
-	animations.add(idle, "sprites/player/idle", 11);
-	animations.add(walk, "sprites/player/walk", 13);
-	animations.add(attacking, "sprites/player/attack", 18);
-	animations.add(death, "sprites/player/death", 15);
-	animations.add(take_dmg, "sprites/player/hit", 8);
+	animations.add(State::idle, "sprites/player/idle", 11);
+	animations.add(State::walk, "sprites/player/walk", 13);
+	animations.add(State::attacking, "sprites/player/attack", 18);
+	animations.add(State::death, "sprites/player/death", 15);
+	animations.add(State::take_dmg, "sprites/player/hit", 8);
+	animations.add(State::transforming, "sprites/player/transform", 10);
+	animations.add(State::transforming_back, "sprites/player/transform", -10);
+	animations.add(State::rolling, "sprites/player/roll", 10);
 
-	current_frame = 0;
-	current_animation = animations.get(state);
-	anim_time = 0;
 	last_attack = 0;
+	last_transform = 0;
 	dir = 'r';
 }
 
@@ -29,39 +37,43 @@ Player::~Player() {}
 
 void Player::update(int dt_) {
 	//TODO: fix animations not playing from beginning
-	anim_time += dt_;
 	
-	if (state != attacking) {
-		if ((dx == 0) && (dy == 0))
-			state = idle;
-
-		if (dx > 0) {
-			state = walk;
+	
+	if ((state != State::attacking) && (state != State::transforming) && (state != State::transforming_back)) {
+		if ((dx == 0) && (dy == 0)) {
+			if (!isHead)
+				state = State::idle;
+			else
+				state = State::rolling;
+		}
+		else if (dx > 0) {
+			if (!isHead)
+				state = State::walk;
+			else
+				state = State::rolling;
 			dir = 'r';
 		}
 		else if (dx < 0) {
-			state = walk;
+			if (!isHead)
+				state = State::walk;
+			else
+				state = State::rolling;
 			dir = 'l';
 		}
 	}
-	else {
-		dx = 0;
-		dy = 0;
-	}
-	
-	current_animation = animations.get(state);
-	current_frame = (anim_time / TICKRATE) % current_animation.getLength();
 
-	if (state == attacking) {
-		if (current_frame >= current_animation.getLength() - 1) {
-			state = idle;
-			last_attack = anim_time;
-		}
+	animations.animations[state].update(dt_);
+	if ((state == State::attacking) && (animations.animations[state].hasEnded())) {
+		state = State::idle;
 	}
+	if (((state == State::transforming) || (state == State::transforming_back)) && (animations.animations[state].hasEnded())) {
+		state = State::idle;
+	}
+		
 
 	//TODO: private data + getters
 	//TODO: fix animation position
-	sprite.setTexture(current_animation.frames[dir].at(current_frame));
+	animations.animations[state].applyToSprite(sprite, dir);
 	
 	x += dx * dt_;
 	y += dy * dt_;
@@ -69,7 +81,7 @@ void Player::update(int dt_) {
 	dx = 0;
 }
 
-void Player::draw(sf::RenderWindow window) {
+void Player::draw(sf::RenderWindow& window) {
 	window.draw(sprite);
 }
 
@@ -81,8 +93,28 @@ void Player::setdY(double dy_) {
 	dy = dy_;
 }
 
-void Player::attack() {
-	if ((anim_time - last_attack >= 500) && (state != attacking)) {
-		state = attacking;
+void Player::attack(double tp_) {
+	if ((state == State::attacking) || (state == State::rolling) || (state == State::transforming) || (state == State::transforming_back))
+		return;
+
+	if (tp_ >= (last_attack + attack_cd)) {
+		state = State::attacking;
+		last_attack = tp_;
+	}
+}
+
+void Player::transform(double tp_) {
+	if ((state == State::attacking) || (state == State::transforming) || (state == State::transforming_back))
+		return;
+
+	if (tp_ >= (last_transform + transform_cd)) {
+		if (!isHead) {
+			state = State::transforming;
+				isHead = true;
+		}
+		else {
+			state = State::transforming_back;
+				isHead = false;
+		}
 	}
 }

@@ -6,15 +6,24 @@
 class Animation {
 private:
 	typedef std::vector<sf::Texture> Frames;
+	std::map<char, Frames> frames;
 	
 	sf::Texture texture;
 	sf::Image image;
 
 	int length;
+	int iFrame;
+	double frameTime;
+	double time;
+
+	void advance();
+	bool repeat;
+
 public:
-	std::map<char, Frames> frames;
 	Animation();
 	void fromDir(const std::string path, int frame_count);
-	sf::Texture getTexture(char dir, int iFrame);
+	void applyToSprite(sf::Sprite& sprite, char dir);
 	int getLength();
+	void update(float dt_);
+	bool hasEnded();
 };
