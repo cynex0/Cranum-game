@@ -7,8 +7,8 @@
 
 Player::Player(double x_, double y_)
 	:
-	attack_cd(10),
-	transform_cd(25)
+	attack_cd(100),
+	transform_cd(250)
 {
 	x = x_;
 	y = y_;
@@ -36,9 +36,6 @@ Player::Player(double x_, double y_)
 Player::~Player() {}
 
 void Player::update(int dt_) {
-	//TODO: fix animations not playing from beginning
-	
-	
 	if ((state != State::attacking) && (state != State::transforming) && (state != State::transforming_back)) {
 		if ((dx == 0) && (dy == 0)) {
 			if (!isHead)
@@ -62,23 +59,30 @@ void Player::update(int dt_) {
 		}
 	}
 
-	animations.animations[state].update(dt_);
+	// reset one-time animations
 	if ((state == State::attacking) && (animations.animations[state].hasEnded())) {
+		animations.animations[state].reset();
 		state = State::idle;
 	}
 	if (((state == State::transforming) || (state == State::transforming_back)) && (animations.animations[state].hasEnded())) {
+		animations.animations[state].reset();
 		state = State::idle;
 	}
-		
 
-	//TODO: private data + getters
 	//TODO: fix animation position
-	animations.animations[state].applyToSprite(sprite, dir);
+	//TODO: make head stay in place when not moving
+	// update animations
 	
-	x += dx * dt_;
-	y += dy * dt_;
+	animations.animations[state].update(dt_);
+	animations.animations[state].applyToSprite(sprite, dir);
+	//update position
+	if (state == State::walk || state == State::rolling) {
+		x += dx * dt_;
+		y += dy * dt_;
+	}
 	sprite.setPosition(x, y);
-	dx = 0;
+
+	dx = 0; //reset velocity for next loop
 }
 
 void Player::draw(sf::RenderWindow& window) {

@@ -17,7 +17,6 @@ private:
 	double time;
 
 	void advance();
-	bool repeat;
 
 public:
 	Animation();
@@ -26,4 +25,5 @@ public:
 	int getLength();
 	void update(float dt_);
 	bool hasEnded();
+	void reset();
 };

@@ -10,7 +10,6 @@ Animation::Animation(){
 	length = 0;
 	time = 0;
 	iFrame = 0;
-	repeat = true;
 }
 
 void Animation::fromDir(const std::string path, int frame_count) {
@@ -73,5 +72,10 @@ void Animation::advance() {
 
 bool Animation::hasEnded() {
 	return (iFrame >= (length - 1));
+}
+
+void Animation::reset() {
+	time = 0;
+	iFrame = 0;
 }
 
