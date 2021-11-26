@@ -56,7 +56,6 @@ int Animation::getLength() {
 
 void Animation::update(float dt_) {
 	time += dt_;
-	std::cout << "animTime: " << time << std::endl;
 	while (time >= frameTime) {
 		time -= frameTime;
 		advance();

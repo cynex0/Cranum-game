@@ -14,7 +14,7 @@ Player::Player(double x_, double y_):
 	dx = 0;
 	dy = 0;
 
-	sprite.setScale(2, 2);
+	sprite.setScale(1.5, 1.5);
 
 	lives = 3;
 	state = State::idle;
@@ -70,7 +70,6 @@ void Player::update(int dt_) {
 		state = State::idle;
 	}
 
-	//TODO: fix animation position
 	//TODO: make head stay in place when not moving
 	// update animations
 	
