@@ -5,8 +5,7 @@
 #include <string>
 #include <iostream>
 
-Player::Player(double x_, double y_)
-	:
+Player::Player(double x_, double y_):
 	attack_cd(100),
 	transform_cd(250)
 {
@@ -14,6 +13,8 @@ Player::Player(double x_, double y_)
 	y = y_;
 	dx = 0;
 	dy = 0;
+
+	sprite.setScale(2, 2);
 
 	lives = 3;
 	state = State::idle;
@@ -80,6 +81,7 @@ void Player::update(int dt_) {
 		x += dx * dt_;
 		y += dy * dt_;
 	}
+
 	sprite.setPosition(x, y);
 
 	dx = 0; //reset velocity for next loop
@@ -97,7 +99,7 @@ void Player::setdY(double dy_) {
 	dy = dy_;
 }
 
-void Player::attack(double tp_) {
+void Player::attack(int tp_) {
 	if ((state == State::attacking) || (state == State::rolling) || (state == State::transforming) || (state == State::transforming_back))
 		return;
 
@@ -107,7 +109,7 @@ void Player::attack(double tp_) {
 	}
 }
 
-void Player::transform(double tp_) {
+void Player::transform(int tp_) {
 	if ((state == State::attacking) || (state == State::transforming) || (state == State::transforming_back))
 		return;
 

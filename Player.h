@@ -14,12 +14,12 @@ private:
 	const int attack_cd;
 	const int transform_cd;
 	char dir;
-	bool isHead;
-
-	State state;
 
 public:
+	bool isHead;
+	State state;
 	sf::Sprite sprite;
+
 	Player(double x, double y);
 	~Player();
 
@@ -27,6 +27,6 @@ public:
 	virtual void draw(sf::RenderWindow& window);
 	virtual void setdX(double dx_);
 	virtual void setdY(double dy_);
-	void attack(double tp_);
-	void transform(double tp_);
+	void attack(int tp_);
+	void transform(int tp_);
 };

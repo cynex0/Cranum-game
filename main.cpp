@@ -35,10 +35,10 @@ int main()
 
 		// input
 		if (Keyboard::isKeyPressed(Keyboard::Right)) {
-			player.setdX(PLAYER_DX);
+			player.setdX(PLAYER_DX + (DX_BUFF * player.isHead)); // player gets a speed buff when in head form
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Left)) {
-			player.setdX(-PLAYER_DX);
+			player.setdX(-PLAYER_DX - (DX_BUFF * player.isHead));
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Space)) {
 			player.attack(tp);
