@@ -4,8 +4,6 @@
 
 class Enemy : public IMoveable {
 private:
-
-
 	sf::Texture idle_animation[11];
 	sf::Texture attack_animation[18];
 	sf::Texture dead_animation[15];
@@ -15,7 +13,6 @@ private:
 	int lives;
 
 public:
-
 	sf::Sprite sprite;
 	Enemy(double x, double y);
 	~Enemy();

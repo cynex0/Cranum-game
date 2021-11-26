@@ -1,27 +1,32 @@
 #pragma once
 #include "IMoveable.h"
+#include "AnimationManager.h"
+#include <vector>
 #include <SFML/Graphics.hpp>
 
 class Player : public IMoveable {
 private:
-
-	
-	sf::Texture idle_animation[11];
-	sf::Texture attack_animation[18];
-	sf::Texture dead_animation[15];
-	sf::Texture hit_animation[8];
-	sf::Texture walk_animation[13];
+	AnimationManager animations;
 	
 	int lives;
-	int state; // 0 - default; 1 - head
+	int last_attack; 
+	int last_transform;
+	const int attack_cd;
+	const int transform_cd;
+	char dir;
 
 public:
-
+	bool isHead;
+	State state;
 	sf::Sprite sprite;
+
 	Player(double x, double y);
 	~Player();
 
-	virtual void move();
+	virtual void update(int dt_);
+	virtual void draw(sf::RenderWindow& window);
 	virtual void setdX(double dx_);
 	virtual void setdY(double dy_);
+	void attack(int tp_);
+	void transform(int tp_);
 };
