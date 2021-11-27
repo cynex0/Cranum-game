@@ -1,19 +1,26 @@
 #pragma once
 #include "constants.h"
-#include <list>
+#include <vector>
 #include <SFML/Graphics.hpp>
 
 
 class Level {
 private:
+	int id;
+
 	sf::Texture texture;
 	sf::Sprite sprite;
 
-	int map[TILES_X][TILES_Y];
-	std::list<sf::Sprite> sprite_map;
+	std::vector<sf::Sprite> sprite_map;
 
 public:
-	Level(int id);
-	void getSprites();
+	bool isCompleted;
+
+	std::vector<std::vector<int>> map;
+
+	std::vector<sf::FloatRect> groundRects;
+	std::vector<sf::FloatRect> spikeRects;
+
+	Level(int id_);
 	void draw(sf::RenderWindow& window);
 };
