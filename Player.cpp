@@ -17,6 +17,11 @@ Player::Player(double x_, double y_):
 	dx = 0;
 	dy = 0;
 
+	buffer.loadFromFile("sprites/death.wav");
+	death_sound.setBuffer(buffer);
+	death_sound.setLoop(false);
+	death_sound.setVolume(50);
+
 	//sprite.setScale(1.5, 1.5);
 
 	state = State::idle;
@@ -126,8 +131,10 @@ void Player::update(float dt_, Level& level, sf::RenderWindow& window) {
 	y += dy * dt_;
 
 	doCollisions(level.groundRects);
-	if (doCollisions(level.spikeRects))
+	if (doCollisions(level.spikeRects)) {
+		death_sound.play();
 		state = State::death;
+	}
 
 	sprite.setPosition(x, y);
 	
