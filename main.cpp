@@ -11,7 +11,7 @@ using namespace sf;
 
 int main()
 {
-	RenderWindow window(VideoMode(WINDOW_W, WINDOW_H), "SFML Works!");
+	RenderWindow window(VideoMode(WINDOW_W, WINDOW_H), "Cranum");
 
 	Level levels[3] = { Level(1), Level(2), Level(3)};
 	int current_level_id = 0;
