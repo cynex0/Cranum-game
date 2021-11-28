@@ -11,8 +11,8 @@ int main()
 {
 	RenderWindow window(VideoMode(WINDOW_W, WINDOW_H), "SFML Works!");
 
-	Level levels[4] = { Level(1), Level(2), Level(3), Level(4)};
-	int current_level_id = 2;
+	Level levels[3] = { Level(1), Level(2), Level(3)};
+	int current_level_id = 0;
 
 	Player player(100, 100);
 
@@ -46,7 +46,7 @@ int main()
 
 		if (levels[current_level_id].isCompleted)
 		{		
-			if (++current_level_id < 4) {
+			if (++current_level_id < 3) {
 				player.reset();
 			}
 			else {
