@@ -6,7 +6,7 @@
 #include <string>
 
 Animation::Animation(){
-	frameTime = 60;
+	frameTime = 0.05;
 	length = 0;
 	time = 0;
 	iFrame = 0;

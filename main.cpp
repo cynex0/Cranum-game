@@ -12,7 +12,7 @@ int main()
 	RenderWindow window(VideoMode(WINDOW_W, WINDOW_H), "SFML Works!");
 
 	Level levels[4] = { Level(1), Level(2), Level(3), Level(4)};
-	int current_level_id = 0;
+	int current_level_id = 2;
 
 	Player player(100, 100);
 
@@ -22,9 +22,9 @@ int main()
 
 	sf::Clock clock;
 	clock.restart();
-	int tp = clock.getElapsedTime().asMilliseconds();
-	int dt = 0;
-	int new_tp = 0;
+	float tp = clock.getElapsedTime().asMilliseconds() / 1000.0;
+	float dt = 0;
+	float new_tp = 0;
 
 	// game loop
 	while (window.isOpen())
@@ -38,8 +38,10 @@ int main()
 			}
 		}
 		// get frame time
-		new_tp = clock.getElapsedTime().asMilliseconds();
+		new_tp = clock.getElapsedTime().asMilliseconds() / 1000.0;
 		dt = new_tp - tp;
+		if (dt > 0.15)
+			dt = 0.15;
 		tp = new_tp;
 
 		if (levels[current_level_id].isCompleted)
@@ -55,7 +57,7 @@ int main()
 
 		// input
 		if (player.isHead && Keyboard::isKeyPressed(Keyboard::Up)) {
-			player.jump(tp);
+			player.jump(dt);
 		}
 		if (Keyboard::isKeyPressed(Keyboard::Right)) {
 			player.setdX(PLAYER_DX + (DX_BUFF * player.isHead)); // player gets a speed buff when in head form
@@ -63,9 +65,9 @@ int main()
 		if (Keyboard::isKeyPressed(Keyboard::Left)) {
 			player.setdX(-PLAYER_DX - (DX_BUFF * player.isHead));
 		}
-		//if (Keyboard::isKeyPressed(Keyboard::Space)) {
-			//player.attack(tp);
-		//}
+		/*if (Keyboard::isKeyPressed(Keyboard::Space)) {
+			player.attack(tp);
+		}*/
 		if (Keyboard::isKeyPressed(Keyboard::LShift)) {
 			player.transform(tp);
 		}

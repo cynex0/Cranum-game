@@ -7,8 +7,8 @@
 #include <iostream>
 
 Player::Player(double x_, double y_):
-	attack_cd(200),
-	transform_cd(350)
+	attack_cd(0.35),
+	transform_cd(0.75)
 {
 	x = x_;
 	y = y_;
@@ -32,9 +32,8 @@ Player::Player(double x_, double y_):
 	animations.add(State::transforming_back, "sprites/player/transform", -10);
 	animations.add(State::rolling, "sprites/player/roll", 10);
 
-	last_attack = 0;
-	last_transform = 0;
-	jump_time = 0;
+	last_attack = -attack_cd;
+	last_transform = -transform_cd;
 	dir = 'r';
 }
 
@@ -51,25 +50,15 @@ void Player::reset() {
 	dy = 0;
 }
 
-void Player::update(int dt_, Level& level, sf::RenderWindow& window) {
+void Player::update(float dt_, Level& level, sf::RenderWindow& window) {
 	// Y:
-	if (y < 0)
+	if (y < 0) {
 		y = 0;
+		dy = 0;
+	}
 
-	if (!isJumping) {
-		if (!isHead)
-			y += GRAVITY * dt_;
-		else
-			y += GRAVITY_HEAD * dt_;
-	}
-	else {
-		jump_time += dt_;
-		if (jump_time > 400) {
-			isJumping = false;
-			dy = 0;
-			jump_time = 0;
-		}
-	}
+	if (dy >= 0)
+		isJumping = false;
 
 	// X:
 	if (x < 0) 
@@ -78,30 +67,32 @@ void Player::update(int dt_, Level& level, sf::RenderWindow& window) {
 		level.isCompleted = true;
 
 	if ((state != State::attacking) && (state != State::transforming) && (state != State::transforming_back) && (state != State::death)) {
-		if ((dx == 0) && (dy == 0)) {
+		if ((dx == 0)/* && (dy == 0)*/) {
 			if (!isHead)
 				state = State::idle;
-			else
-				state = State::rolling;
 		}
 		else if (dx > 0) {
 			if (!isHead)
-				state = State::walk;
-			else
-				state = State::rolling;
+				state = State::walk;		
 			dir = 'r';
 		}
 		else if (dx < 0) {
 			if (!isHead)
 				state = State::walk;
-			else
-				state = State::rolling;
 			dir = 'l';
 		}
+		if (isHead)
+			state = State::rolling;
 	}
 	else if (state == State::death) {
 		dx = 0;
 		dy = 0;
+	}
+	if (state == State::rolling && dx == 0) {
+		if (dir == 'r')
+			dx = PLAYER_DX;
+		else
+			dx = -PLAYER_DX;
 	}
 
 	// one-time animations handling
@@ -109,10 +100,15 @@ void Player::update(int dt_, Level& level, sf::RenderWindow& window) {
 		animations.animations[state].reset();
 		state = State::idle;
 	}
-	if (((state == State::transforming) || (state == State::transforming_back)) && (animations.animations[state].hasEnded())) {
+	if ((state == State::transforming) && (animations.animations[state].hasEnded())) {
+		animations.animations[state].reset();
+		state = State::rolling;
+	}
+	if ((state == State::transforming_back) && (animations.animations[state].hasEnded())) {
 		animations.animations[state].reset();
 		state = State::idle;
 	}
+
 	if (state == State::death && (animations.animations[state].hasEnded())) {
 		animations.animations[state].reset();
 		reset();
@@ -137,6 +133,10 @@ void Player::update(int dt_, Level& level, sf::RenderWindow& window) {
 	
 	//reset velocities for next loop
 	dx = 0; 
+	if (!isHead)
+		dy += GRAVITY * dt_;
+	else
+		dy += GRAVITY_HEAD * dt_;
 }
 
 bool Player::doCollisions(std::vector<sf::FloatRect> rects) {
@@ -160,7 +160,11 @@ bool Player::doCollisions(std::vector<sf::FloatRect> rects) {
 		float intersectY = abs(deltaY) - (rectSize.y + playerSize.y);
 
 		if (intersectX < 0.0 && intersectY < 0.0) {
-			isOnGround = true;
+			if (deltaY > 0.0) {
+				isOnGround = true;
+				dy = 0;
+			}
+
 			flag = true;
 			if (intersectX > intersectY) {
 				if (deltaX > 0.0) {
@@ -195,7 +199,7 @@ void Player::setdY(double dy_) {
 	dy = dy_;
 }
 
-void Player::attack(int tp_) {
+void Player::attack(float tp_) {
 	if ((state == State::attacking) || (state == State::rolling) || (state == State::transforming) || (state == State::transforming_back) || (state == State::death) || !isOnGround)
 		return;
 
@@ -205,8 +209,8 @@ void Player::attack(int tp_) {
 	}
 }
 
-void Player::jump(int tp_) {
-	if (state == State::death)
+void Player::jump(float dt_) {
+	if (state == State::death || (state == State::transforming) || (state == State::transforming_back))
 		return;
 
 	if ((!isJumping) && isOnGround) {
@@ -216,18 +220,18 @@ void Player::jump(int tp_) {
 	}
 }
 
-void Player::transform(int tp_) {
+void Player::transform(float tp_) {
 	if ((state == State::attacking) || (state == State::transforming) || (state == State::transforming_back) || (state == State::death) || !isOnGround)
 		return;
 
 	if (tp_ >= (last_transform + transform_cd)) {
 		if (!isHead) {
 			state = State::transforming;
-				isHead = true;
+			isHead = true;
 		}
 		else {
 			state = State::transforming_back;
-				isHead = false;
+			isHead = false;
 		}
 	}
 }
