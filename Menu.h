@@ -16,6 +16,9 @@ private:
 	sf::Texture start_texture;
 	sf::Texture exit_texture;
 
+	sf::IntRect start_rect;
+	sf::IntRect exit_rect;
+
 	sf::SoundBuffer buffer;
 	sf::Sound music;
 
@@ -24,4 +27,7 @@ public:
 	~Menu();
 	void update(float dt_);
 	void draw(sf::RenderWindow& window);
+	void stop();
+	sf::IntRect getStartBtn();
+	sf::IntRect getExitBtn();
 };

@@ -17,18 +17,26 @@ Menu::Menu() {
 	start_sprite.setPosition(649, 283);
 	exit_sprite.setPosition(691, 373);
 
+	start_rect.left = start_sprite.getPosition().x;
+	start_rect.top = start_sprite.getPosition().y;
+	start_rect.width = start_texture.getSize().x;
+	start_rect.height = start_texture.getSize().y;
+	
+	exit_rect.left = exit_sprite.getPosition().x;
+	exit_rect.top = exit_sprite.getPosition().y;
+	exit_rect.width = exit_texture.getSize().x;
+	exit_rect.height = exit_texture.getSize().y;
+
 	if (!buffer.loadFromFile("sprites/theme.wav")) 
 		return;
 	music.setBuffer(buffer);
 
 	music.setVolume(20);
+	music.setLoop(true);
 	music.play();
 }
 
-Menu::~Menu()
-{
-	music.stop();
-}
+Menu::~Menu(){}
 
 void Menu::update(float dt_)
 {
@@ -43,4 +51,19 @@ void Menu::draw(sf::RenderWindow& window)
 	window.draw(title_sprite);
 	window.draw(start_sprite);
 	window.draw(exit_sprite);
+}
+
+void Menu::stop()
+{
+	music.stop();
+}
+
+sf::IntRect Menu::getStartBtn()
+{
+	return start_rect;
+}
+
+sf::IntRect Menu::getExitBtn()
+{
+	return exit_rect;
 }

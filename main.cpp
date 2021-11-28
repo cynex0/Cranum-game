@@ -19,6 +19,7 @@ int main()
 	enum GameStates {menu, game};
 	GameStates state = menu;
 	Menu title_screen;
+	Vector2i mousePos;
 
 	Texture bg_texture;
 	bg_texture.loadFromFile("sprites/BG.png");
@@ -62,9 +63,23 @@ int main()
 		switch (state)
 		{
 		case menu:
+			if (Mouse::isButtonPressed(Mouse::Button::Left)) {
+				mousePos = Mouse::getPosition(window);
+				if (title_screen.getStartBtn().contains(mousePos)) {
+					state = game;
+					title_screen.stop();
+				}
+				if (title_screen.getExitBtn().contains(mousePos)) {
+					window.close();
+					title_screen.stop();
+					return 0;
+				}
+			}
+
 			title_screen.update(dt);
 			title_screen.draw(window);
 			break;
+
 		case game:
 			// input
 			if (player.isHead && Keyboard::isKeyPressed(Keyboard::Up)) {
