@@ -1,4 +1,5 @@
 ﻿#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "constants.h"
 #include "Player.h"
 #include "Level.h"
@@ -14,6 +15,16 @@ int main()
 
 	Level levels[3] = { Level(1), Level(2), Level(3)};
 	int current_level_id = 0;
+
+	sf::SoundBuffer buffer;
+	sf::Sound level_music;
+	if (buffer.loadFromFile("sprites/level_music.wav")) {
+		level_music.setBuffer(buffer);
+
+		level_music.setVolume(15);
+		level_music.setLoop(true);
+	}
+	
 
 	Player player(100, 100);
 	enum GameStates {menu, game};
@@ -68,6 +79,7 @@ int main()
 				if (title_screen.getStartBtn().contains(mousePos)) {
 					state = game;
 					title_screen.stop();
+					level_music.play();
 				}
 				if (title_screen.getExitBtn().contains(mousePos)) {
 					window.close();

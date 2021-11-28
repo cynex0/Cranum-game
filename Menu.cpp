@@ -31,7 +31,7 @@ Menu::Menu() {
 		return;
 	music.setBuffer(buffer);
 
-	music.setVolume(20);
+	music.setVolume(15);
 	music.setLoop(true);
 	music.play();
 }

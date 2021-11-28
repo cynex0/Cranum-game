@@ -4,11 +4,16 @@
 #include "AnimationManager.h"
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
 
 class Player : public IMoveable {
 private:
 	AnimationManager animations;
 	
+	sf::SoundBuffer buffer;
+	sf::Sound death_sound;
+
 	bool doCollisions(std::vector<sf::FloatRect> rects);
 
 	int lives;
