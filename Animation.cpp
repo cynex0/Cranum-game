@@ -6,7 +6,7 @@
 #include <string>
 
 Animation::Animation(){
-	frameTime = 60;
+	frameTime = 0.05;
 	length = 0;
 	time = 0;
 	iFrame = 0;
@@ -56,7 +56,6 @@ int Animation::getLength() {
 
 void Animation::update(float dt_) {
 	time += dt_;
-	std::cout << "animTime: " << time << std::endl;
 	while (time >= frameTime) {
 		time -= frameTime;
 		advance();
