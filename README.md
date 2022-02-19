@@ -8,10 +8,10 @@ Basic platformer game based on C++ and SFML library.
 - Sound effects.
 
 ## How to play?
-The goal is to reach the right edge of the screen, by traversing platforms and evading obstacles.\n
-NOTE: The player is only able to jump while Rolling!
+The goal is to reach the right edge of the screen, by traversing platforms and evading obstacles.  
+**NOTE:** The player is only able to jump while Rolling!
 
 ## Controls
-Arrow Left/Right: Move\n
-Arrow Up: Jump\n
-LShift: Transform (Roll/Walk)\n
+\[Arrow Left/Right]: Move  
+\[Arrow Up]: Jump  
+\[LShift]: Transform (Roll/Walk)
