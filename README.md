@@ -1,5 +1,6 @@
 # Cranum
-Basic platformer game based on C++ and SFML library.
+Basic platformer game based on C++ and SFML library.  
+*All used assets were acquired for free through OpenGameArt.org*
 
 ## Features
 - Multiple levels stored in text files.
