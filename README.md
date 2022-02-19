@@ -12,6 +12,6 @@ The goal is to reach the right edge of the screen, by traversing platforms and e
 NOTE: The player is only able to jump while Rolling!
 
 ## Controls
-\[Arrow Left/Right]: Move
-\[Arrow Up]: Jump
-\[LShift]: Transform (Roll/Walk)
+Arrow Left/Right: Move
+Arrow Up: Jump
+LShift: Transform (Roll/Walk)
